@@ -11,9 +11,17 @@
 <body>
     <h1>project-x</h1>
     <form>
-        <input type="text" id="evtname" name="evtname" required />
-        <input type="date" name="startdate" required />
-        <input type="date" name="enddate" />
+        <p><label for="sdate">(start) Date:<label/><input type="date" name="sdate" id="sdate" required /></p>
+
+        <p><label for="edate">End date:</label><input type="date" name="edate" id="edate" /></p>
+
+        <p><label for="tagname">Tag name:</label><input type="text" name="tagname" id="tagname" required /></p>
+
+        <p>
+            <label for="desc">Description:</label><br />
+            <textarea name="desc" id="desc" rows="7" cols="30"></textarea>
+        </p>
+
         <input type="submit" value="Wonkle!" />
     </form>
     
