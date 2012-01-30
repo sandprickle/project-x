@@ -36,7 +36,7 @@ var Projx = {
 
         console.log("Data stored");
 
-        event.preventDefault(); 
+        event.preventDefault();
     },
 
    fileSystemInit: function() {
@@ -44,18 +44,22 @@ var Projx = {
 
         var reqFS = window.requestFileSystem || window.webkitRequestFileSystem;
         window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, function(b){
-            reqFS(window.PERSISTENT, b, function(fs) {
-                Projx.fs = true;
-                console.log('We got a fs: ' . fs);
-            });
+            reqFS(window.PERSISTENT, b, Projx.fsInitOkHandler);
         }, function(error) {
             console.log('Oops: ' . error);
         });
 
     },
+    fsInitOkHandler: function(fs) {
+        "use strict";
+        Projx.fs = fs;
+        console.log('FileSystem Init successful!');
+        Projx.storeData();
+    },
+
     storeData: function() {
         "use strict";
-        if (Projx.fs = true) {
+        if (Projx.fs) {
            // store data
             console.log('Storing data :) (ok not really)');
         }
