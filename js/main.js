@@ -34,7 +34,7 @@ var Projx = {
         };
         Projx.c += 1;
 
-        console.log("Data stored");
+        console.log("Data grabbed");
 
         event.preventDefault();
     },
