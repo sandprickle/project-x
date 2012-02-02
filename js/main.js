@@ -23,6 +23,7 @@ var Projx = {
     data: {
         tags: []
     },
+    dataOut: {},
     grabData: function(event) {
         "use strict";
         var c = Projx.data.tags.length;
@@ -61,13 +62,40 @@ var Projx = {
         "use strict";
         if (Projx.fs) {
            // store data
-            console.log('Storing data :) (ok not really)');
+
+            Projx.fs.root.getFile('tags.json', {create: true}, function(fileEntry) {
+                fileEntry.createWriter(function(fileWriter) {
+                    fileWriter.onwriteend = function(e) {
+                        console.log('Data stored');
+                    };
+
+                    var builder = new window.WebKitBlobBuilder();
+                    var d = JSON.stringify(Projx.data);
+                    builder.append(d);
+                    fileWriter.write(builder.getBlob('application/json'));
+                });
+            });
         }
         else {
             console.log('We need to initialize the FileSystem.');
             Projx.fileSystemInit();
         }
-    
+    },
+    retrieveData: function() {
+        "use strict";
+        Projx.fs.root.getFile('tags.json', {}, function(fileEntry) {
+            fileEntry.file(function(file) {
+        
+                var fr = new FileReader();
+
+                fr.onloadend = function(e) {
+                    var data = this.result;
+                    Projx.dataOut = JSON.parse(data);
+                };
+
+                fr.readAsText(file);
+            });
+        });
     }
 };
 
