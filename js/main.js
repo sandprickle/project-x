@@ -36,67 +36,89 @@ var Projx = {
         Projx.c += 1;
 
         console.log("Data grabbed");
+        Projx.storeData();
 
         event.preventDefault();
     },
 
-   fileSystemInit: function() {
-        "use strict";
-
-        var reqFS = window.requestFileSystem || window.webkitRequestFileSystem;
-        window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, function(b){
-            reqFS(window.PERSISTENT, b, Projx.fsInitOkHandler);
-        }, function(error) {
-            console.log('Oops: ' . error);
-        });
-
-    },
-    fsInitOkHandler: function(fs) {
-        "use strict";
-        Projx.fs = fs;
-        console.log('FileSystem Init successful!');
-        Projx.storeData();
-    },
-
     storeData: function() {
         "use strict";
-        if (Projx.fs) {
-           // store data
-
-            Projx.fs.root.getFile('tags.json', {create: true}, function(fileEntry) {
-                fileEntry.createWriter(function(fileWriter) {
-                    fileWriter.onwriteend = function(e) {
-                        console.log('Data stored');
-                    };
-
-                    var builder = new window.WebKitBlobBuilder();
-                    var d = JSON.stringify(Projx.data);
-                    builder.append(d);
-                    fileWriter.write(builder.getBlob('application/json'));
-                });
-            });
-        }
-        else {
-            console.log('We need to initialize the FileSystem.');
-            Projx.fileSystemInit();
-        }
+        var dataStr = JSON.stringify(Projx.data);
+        localStorage.setItem('data', dataStr);
+        console.log('Data stored');        
     },
+
     retrieveData: function() {
         "use strict";
-        Projx.fs.root.getFile('tags.json', {}, function(fileEntry) {
-            fileEntry.file(function(file) {
-        
-                var fr = new FileReader();
-
-                fr.onloadend = function(e) {
-                    var data = this.result;
-                    Projx.dataOut = JSON.parse(data);
-                };
-
-                fr.readAsText(file);
-            });
-        });
+        Projx.dataOut = JSON.parse(localStorage.getItem('data'));
+        console.log('Retrieved data is in Projx.dataOut');
     }
 };
 
 Projx.init();
+
+
+
+
+
+
+
+
+// == Old code ==============================
+// 
+// Projx.storeData = function() {
+    // if (Projx.fs) {
+    //    // store data
+    //     Projx.fs.root.getFile('tags.json', {create: true}, function(fileEntry) {
+    //         fileEntry.createWriter(function(fileWriter) {
+    //             fileWriter.onwriteend = function(e) {
+    //                 console.log('Data stored');
+    //             };
+
+    //             var builder = new window.WebKitBlobBuilder();
+    //             var d = JSON.stringify(Projx.data);
+    //             builder.append(d);
+    //             fileWriter.write(builder.getBlob('application/json'));
+    //         });
+    //     });
+    // }
+    // else {
+    //     console.log('We need to initialize the FileSystem.');
+    //     Projx.fileSystemInit();
+// }
+//
+//
+// Projx.fileSystemInit = function() {
+//         "use strict";
+
+//         var reqFS = window.requestFileSystem || window.webkitRequestFileSystem;
+//         window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, function(b){
+//             reqFS(window.PERSISTENT, b, Projx.fsInitOkHandler);
+//         }, function(error) {
+//             console.log('Oops: ' . error);
+//         });
+
+//     };
+//     Projx.fsInitOkHandler = function(fs) {
+//         "use strict";
+//         Projx.fs = fs;
+//         console.log('FileSystem Init successful!');
+//         Projx.storeData();
+//     };
+//
+//
+// Projx.retrieveData = function() {
+//         Projx.fs.root.getFile('tags.json', {}, function(fileEntry) {
+//             fileEntry.file(function(file) {
+        
+//                 var fr = new FileReader();
+
+//                 fr.onloadend = function(e) {
+//                     var data = this.result;
+//                     Projx.dataOut = JSON.parse(data);
+//                 };
+
+//                 fr.readAsText(file);
+//             });
+//         });
+//     };
