@@ -6,7 +6,7 @@ var Projx = {
     init: function() {
         // add event listener to submit button,
         // store input fields in variables,
-        // counter init
+
 
         "use strict";
         
@@ -17,13 +17,17 @@ var Projx = {
         Projx.eDateEl = document.querySelector('input[name="edate"]');
         Projx.tagNameEl = document.querySelector('input[name="tagname"]');
         Projx.descEl = document.querySelector('[name="desc"]');
+        console.log('Tag input initialized');
 
-        console.log('Init completed');
+        var container = document.querySelector('body>div:nth-of-type(2)');
+        Projx.p = window.Raphael(container, 800, 300);
+        console.log('Timeline initialized');
     },
     data: {
         tags: []
     },
     dataOut: {},
+    c: 0,
     grabData: function(event) {
         "use strict";
         var c = Projx.data.tags.length;
@@ -40,14 +44,12 @@ var Projx = {
 
         event.preventDefault();
     },
-
     storeData: function() {
         "use strict";
         var dataStr = JSON.stringify(Projx.data);
         localStorage.setItem('data', dataStr);
         console.log('Data stored');        
     },
-
     retrieveData: function() {
         "use strict";
         Projx.dataOut = JSON.parse(localStorage.getItem('data'));
@@ -56,7 +58,7 @@ var Projx = {
 };
 
 Projx.init();
-
+Projx.buildTimeline();
 
 
 
@@ -89,36 +91,36 @@ Projx.init();
 //
 //
 // Projx.fileSystemInit = function() {
-//         "use strict";
+    //     "use strict";
 
-//         var reqFS = window.requestFileSystem || window.webkitRequestFileSystem;
-//         window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, function(b){
-//             reqFS(window.PERSISTENT, b, Projx.fsInitOkHandler);
-//         }, function(error) {
-//             console.log('Oops: ' . error);
-//         });
+    //     var reqFS = window.requestFileSystem || window.webkitRequestFileSystem;
+    //     window.webkitStorageInfo.requestQuota(PERSISTENT, 5*1024*1024, function(b){
+    //         reqFS(window.PERSISTENT, b, Projx.fsInitOkHandler);
+    //     }, function(error) {
+    //         console.log('Oops: ' . error);
+    //     });
 
-//     };
-//     Projx.fsInitOkHandler = function(fs) {
-//         "use strict";
-//         Projx.fs = fs;
-//         console.log('FileSystem Init successful!');
-//         Projx.storeData();
+    // };
+    // Projx.fsInitOkHandler = function(fs) {
+    //     "use strict";
+    //     Projx.fs = fs;
+    //     console.log('FileSystem Init successful!');
+    //     Projx.storeData();
 //     };
 //
 //
 // Projx.retrieveData = function() {
-//         Projx.fs.root.getFile('tags.json', {}, function(fileEntry) {
-//             fileEntry.file(function(file) {
+        // Projx.fs.root.getFile('tags.json', {}, function(fileEntry) {
+        //     fileEntry.file(function(file) {
         
-//                 var fr = new FileReader();
+        //         var fr = new FileReader();
 
-//                 fr.onloadend = function(e) {
-//                     var data = this.result;
-//                     Projx.dataOut = JSON.parse(data);
-//                 };
+        //         fr.onloadend = function(e) {
+        //             var data = this.result;
+        //             Projx.dataOut = JSON.parse(data);
+        //         };
 
-//                 fr.readAsText(file);
-//             });
-//         });
+        //         fr.readAsText(file);
+        //     });
+        // });
 //     };
