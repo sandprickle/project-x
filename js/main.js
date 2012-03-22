@@ -3,22 +3,85 @@
 
 var Projx = {
 
+    // Timeline stuff here... for now. Move to external file/webStorage prob
+    timeline: [
+        {
+                type: 'text',
+                x: 25,
+                y: 15,
+                text: '2011',
+                'font-size': 16
+            },
+            {
+                type: 'text',
+                x: 10,
+                y: 292,
+                text: 'May'
+            },
+            {
+                type: 'text',
+                x: 110,
+                y: 292,
+                text: 'June'
+            },
+            {
+                type: 'text',
+                x: 210,
+                y: 292,
+                text: 'July'
+            },
+            {
+                type: 'text',
+                x: 310,
+                y: 292,
+                text: 'August'
+            },
+            {
+                type: 'text',
+                x: 410,
+                y: 292,
+                text: 'September'
+            },
+            {
+                type: 'text',
+                x: 510,
+                y: 292,
+                text: 'October'
+            },
+            {
+                type: 'text',
+                x: 610,
+                y: 292,
+                text: 'November'
+            },
+            {
+                type: 'text',
+                x: 710,
+                y: 292,
+                text: 'December' 
+            },
+            {
+                type: 'path',
+                pathString: 'M30,292L30,280',
+                stroke: '#222222'
+            }
+    ],
     init: function() {
         // add event listener to submit button,
         // store input fields in variables,
 
-
         "use strict";
         
-        var wonkle = document.querySelector('input[type="submit"]');
+        // tag input init
+        var wonkle = document.querySelector('input[type="submit"]');                    // submit button
         wonkle.addEventListener('click', Projx.grabData, false);
-        
-        Projx.sDateEl = document.querySelector('input[name="sdate"]');
-        Projx.eDateEl = document.querySelector('input[name="edate"]');
-        Projx.tagNameEl = document.querySelector('input[name="tagname"]');
-        Projx.descEl = document.querySelector('[name="desc"]');
+        Projx.sDateEl = document.querySelector('input[name="sdate"]');                  // (start) Date
+        Projx.eDateEl = document.querySelector('input[name="edate"]');                  // end date
+        Projx.tagNameEl = document.querySelector('input[name="tagname"]');              // tag name
+        Projx.descEl = document.querySelector('[name="desc"]');                         // description
         console.log('Tag input initialized');
 
+        // timeline init
         var container = document.querySelector('body>div:nth-of-type(2)');
         Projx.p = window.Raphael(container, 800, 300);
         console.log('Timeline initialized');
@@ -54,6 +117,11 @@ var Projx = {
         "use strict";
         Projx.dataOut = JSON.parse(localStorage.getItem('data'));
         console.log('Retrieved data is in Projx.dataOut');
+    },
+    buildTimeline: function() {
+        "use strict";
+        var paper = Projx.p;
+        paper.add(Projx.timeline);
     }
 };
 
